@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="20dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/idRVPhotos"
@@ -72,7 +72,9 @@
     <LinearLayout
         android:id="@+id/tabs_linear_layout"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="55dp"
+        android:background="@color/white"
+        android:elevation="10dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -89,13 +91,14 @@
                 android:layout_width="30dp"
                 android:layout_height="3dp"
                 android:background="@color/red"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
             <ImageView
                 android:layout_marginTop="10dp"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_home_gray" />
+                android:src="@drawable/ic_home_gray"
+                app:tint="@color/red" />
 
         </LinearLayout>
 

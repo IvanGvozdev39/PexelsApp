@@ -35,10 +35,10 @@ class FeaturedCollectionsAdapter(private val context: Context?,
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = collectionList[position]
         holder.titleTV.text = data
-        /*if (data.contains("Curated Picks") && !defaultCollectionsHighlighted) {
-            defaultCollectionsHighlighted = true
+
+        if (data.contains("Curated Picks")) {
             context?.let { holder.titleTV.setTextColor(it.getColor(R.color.white)) }
             context?.let { holder.titleTV.backgroundTintList = ColorStateList.valueOf(it.getColor(R.color.red)) }
-        }*/
+        }
     }
 }

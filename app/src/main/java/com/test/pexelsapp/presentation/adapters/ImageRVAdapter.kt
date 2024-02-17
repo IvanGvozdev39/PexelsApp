@@ -9,8 +9,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.FitCenter
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import com.test.domain.models.Photo
 import com.test.pexelsapp.R
 
@@ -47,11 +50,24 @@ class ImageRVAdapter : RecyclerView.Adapter<ImageRVAdapter.PhotoViewHolder>() {
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
         val photo = list[position]
-        Glide.with(context)
+
+        val placeholderDrawable = ColorDrawable(Color.parseColor(photo.avg_color)).apply {
+            setBounds(0, 0, photo.width, photo.height)
+        }
+
+        Glide.with(holder.itemView)
             .load(photo.src.original)
-            .transform(CenterCrop(), FitCenter()) // Apply transformations for efficient loading
-            .placeholder(createColorDrawable(photo.avg_color)) // Set placeholder color
-            .into(holder.photoIV)    }
+            .placeholder(placeholderDrawable)
+            .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL))
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(holder.photoIV)
+
+
+        holder.itemView.setOnClickListener {
+            // Handle item click here
+        }
+    }
+
 
     private fun createColorDrawable(colorName: String): ColorDrawable {
         val colorInt = Color.parseColor(colorName)
@@ -67,7 +83,6 @@ class ImageRVAdapter : RecyclerView.Adapter<ImageRVAdapter.PhotoViewHolder>() {
     }
 
     class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        // on below line we are initializing our image view.
         val photoIV: ImageView = itemView.findViewById(R.id.idIVImage)
     }
 
