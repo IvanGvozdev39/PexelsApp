@@ -20,13 +20,13 @@ import com.test.domain.models.images.Photo
 import com.test.pexelsapp.R
 
 
-class ImageRVAdapter : RecyclerView.Adapter<ImageRVAdapter.PhotoViewHolder>() {
+class ImageRVAdapter() : RecyclerView.Adapter<ImageRVAdapter.PhotoViewHolder>() {
 
     var list = ArrayList<Photo>()
     lateinit var context: Context
 
-    private var totalPhotosToLoad: Int = 0
-    private var photosLoaded: Int = 0
+    private var totalImages: Int = 0
+    private var imagesLoaded: Int = 0
 
     fun setImageData(list: ArrayList<Photo>, context: Context) {
         this.list = list
@@ -34,6 +34,10 @@ class ImageRVAdapter : RecyclerView.Adapter<ImageRVAdapter.PhotoViewHolder>() {
         this.context = context
 
         notifyDataSetChanged()
+    }
+
+    fun setTotalImages(totalImages: Int) {
+        this.totalImages = totalImages
     }
 
     override fun onCreateViewHolder(
@@ -66,6 +70,7 @@ class ImageRVAdapter : RecyclerView.Adapter<ImageRVAdapter.PhotoViewHolder>() {
             .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL))
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(holder.photoIV)
+
 
 
         holder.itemView.setOnClickListener {

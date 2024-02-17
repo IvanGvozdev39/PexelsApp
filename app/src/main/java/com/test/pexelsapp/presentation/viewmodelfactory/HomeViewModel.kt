@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.test.domain.models.images.ImageResponse
 import com.test.data.repository.ImageRepositoryImpl
-import com.test.domain.models.images.CollectionMediaResponse
 import com.test.domain.use_cases.LoadCuratedPhotosUseCase
 import com.test.domain.use_cases.LoadFeaturedCollectionsUseCase
 import kotlinx.coroutines.launch
@@ -19,6 +18,8 @@ class HomeViewModel(
 ) : ViewModel() {
 
     var imageList: MutableLiveData<Response<ImageResponse>> = MutableLiveData()
+
+    var cleanImageRV: MutableLiveData<Int> = MutableLiveData(0)
 
 //    var imageListFeaturedCollection: MutableLiveData<Response<CollectionMediaResponse>> = MutableLiveData()
 
@@ -50,6 +51,7 @@ class HomeViewModel(
 
     fun getCuratedPhotos() {
         viewModelScope.launch {
+            cleanImageRV.postValue(cleanImageRV.value)
             val response = loadCuratedPhotosUseCase.execute()
             imageList.postValue(response)
         }
@@ -58,6 +60,7 @@ class HomeViewModel(
 
     fun getImages(query: String) {
         viewModelScope.launch {
+            cleanImageRV.postValue(cleanImageRV.value)
             val response = imageRepository.getImages(query)
             imageList.postValue(response)
         }

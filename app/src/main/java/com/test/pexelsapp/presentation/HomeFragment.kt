@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -23,10 +24,7 @@ class HomeFragment : Fragment() {
     lateinit var viewModel: HomeViewModel
     lateinit var imageRVAdapter: ImageRVAdapter
     private val featuredCollectionsAdapter by lazy { FeaturedCollectionsAdapter(requireContext(), ArrayList()) }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +34,7 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         viewModel = ViewModelProvider(this, HomeViewModelFactory()).get(HomeViewModel::class.java)
 
-        var featuredCollectionsList = ArrayList<String>()
+        progressBar = view.findViewById(R.id.progressBarHorizontal)
 
         viewModel.featuredCollectionNames.observe(viewLifecycleOwner) { collections ->
             if (collections != null) {
@@ -70,7 +68,6 @@ class HomeFragment : Fragment() {
         }
 
         featuredCollectionsAdapter.onCollectionSelected = { collection ->
-            Log.d("toataw", collection.id)
 //            viewModel.getImagesFromCollection(collection.id)
             if (collection.title.contains("Curated Picks"))
                 viewModel.getCuratedPhotos()
@@ -87,6 +84,12 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+
+
+        viewModel.cleanImageRV.observe(viewLifecycleOwner) {
+            imageRVAdapter.setImageData(ArrayList<Photo>(), context!!)
+        }
+
 
 
 
