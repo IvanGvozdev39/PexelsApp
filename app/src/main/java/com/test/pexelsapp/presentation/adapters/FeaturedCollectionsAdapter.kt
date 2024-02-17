@@ -2,6 +2,7 @@ package com.test.pexelsapp.presentation.adapters
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,7 @@ class FeaturedCollectionsAdapter(
     private var collectionList: List<com.test.domain.models.images.Collection>
 ) : RecyclerView.Adapter<FeaturedCollectionsAdapter.ViewHolder>() {
 
-    private var selectedPosition: Int = RecyclerView.NO_POSITION
+    private var selectedPosition: Int = 0
 
 
     fun setData(collections: List<com.test.domain.models.images.Collection>) {
@@ -52,13 +53,15 @@ class FeaturedCollectionsAdapter(
         val collection = collectionList[position]
         holder.titleTV.text = collection.title
 
-        // Highlight selected collection
-        val backgroundColor = if (position == selectedPosition) {
-            context?.let { ContextCompat.getColor(it, R.color.red) } // Your highlight color
+        if (position == selectedPosition) {
+            holder.titleTV.backgroundTintList =
+                ColorStateList.valueOf(context?.getColor(R.color.red) ?: Color.RED)
+            holder.titleTV.setTextColor(context?.getColor(R.color.white) ?: Color.WHITE)
         } else {
-            context?.let { ContextCompat.getColor(it, R.color.white) } // Your default color
+            holder.titleTV.backgroundTintList =
+                ColorStateList.valueOf(context?.getColor(R.color.lighter_gray) ?: Color.LTGRAY)
+            holder.titleTV.setTextColor(context?.getColor(R.color.gray) ?: Color.GRAY)
         }
-        backgroundColor?.let { holder.titleTV.setBackgroundColor(it) }
 
         holder.titleTV.setOnClickListener {
             setSelectedCollection(position)

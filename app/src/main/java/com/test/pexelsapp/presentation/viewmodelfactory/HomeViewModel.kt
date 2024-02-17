@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.test.domain.models.images.ImageResponse
 import com.test.data.repository.ImageRepositoryImpl
+import com.test.domain.models.images.CollectionMediaResponse
 import com.test.domain.use_cases.LoadCuratedPhotosUseCase
 import com.test.domain.use_cases.LoadFeaturedCollectionsUseCase
 import kotlinx.coroutines.launch
@@ -17,13 +18,15 @@ class HomeViewModel(
     private val loadCuratedPhotosUseCase: LoadCuratedPhotosUseCase
 ) : ViewModel() {
 
-    var imageList: MutableLiveData<Response<ImageResponse>>
+    var imageList: MutableLiveData<Response<ImageResponse>> = MutableLiveData()
+
+//    var imageListFeaturedCollection: MutableLiveData<Response<CollectionMediaResponse>> = MutableLiveData()
+
 
     private val _featuredCollectionNames = MutableLiveData<List<com.test.domain.models.images.Collection>>()
     val featuredCollectionNames: LiveData<List<com.test.domain.models.images.Collection>> get() = _featuredCollectionNames
 
     init {
-        imageList = MutableLiveData()
         getFeaturedCollectionNames()
         getCuratedPhotos()
     }
@@ -37,12 +40,12 @@ class HomeViewModel(
     }
 
 
-    fun getImagesFromCollection(collectionId: String) {
-        viewModelScope.launch {
-            val response = imageRepository.getImagesFromCollection(collectionId)
-            imageList.postValue(response)
-        }
-    }
+//    fun getImagesFromCollection(collectionId: String) {
+//        viewModelScope.launch {
+//            val response = imageRepository.getImagesFromCollection(collectionId)
+//            imageListFeaturedCollection.postValue(response)
+//        }
+//    }
 
 
     fun getCuratedPhotos() {

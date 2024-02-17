@@ -22,7 +22,7 @@ interface ApiInterface {
     @GET("search")
     suspend fun getImages(
         @Query("query") query : String,
-        @Query("per_page") perpage : Int = 20,
+        @Query("per_page") perpage : Int = 80,
     ): Response<ImageResponse>
 
 
@@ -30,7 +30,7 @@ interface ApiInterface {
     @GET("curated")
     suspend fun getCuratedPhotos(
         @Query("page") page: Int = 1,
-        @Query("per_page") perPage: Int = 20
+        @Query("per_page") perPage: Int = 80
     ): Response<ImageResponse>
 
 
@@ -38,7 +38,8 @@ interface ApiInterface {
     @GET("collections/{collectionId}")
     suspend fun getImagesFromCollection(
         @Query("collectionId") collectionId: String,
+        @Query("type") type: String = "photos",
         @Query("page") page: Int = 1,
-        @Query("per_page") perPage: Int = 20
-    ): Response<ImageResponse>
+        @Query("per_page") perPage: Int = 80
+    ): Response<CollectionMediaResponse>
 }

@@ -3,14 +3,18 @@ package com.test.pexelsapp.presentation.adapters
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.test.domain.models.images.Photo
 import com.test.pexelsapp.R
@@ -20,6 +24,9 @@ class ImageRVAdapter : RecyclerView.Adapter<ImageRVAdapter.PhotoViewHolder>() {
 
     var list = ArrayList<Photo>()
     lateinit var context: Context
+
+    private var totalPhotosToLoad: Int = 0
+    private var photosLoaded: Int = 0
 
     fun setImageData(list: ArrayList<Photo>, context: Context) {
         this.list = list

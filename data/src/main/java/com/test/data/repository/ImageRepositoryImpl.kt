@@ -21,7 +21,7 @@ class ImageRepositoryImpl : ImageRepository {
 //        return response.body()?.collections?.map { it.title } ?: emptyList()
     }
 
-    override suspend fun getImagesFromCollection(collectionId: String): Response<ImageResponse> {
+    override suspend fun getImagesFromCollection(collectionId: String): Response<CollectionMediaResponse> {
         return api.getImagesFromCollection(collectionId)
     }
 }

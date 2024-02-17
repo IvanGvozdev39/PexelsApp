@@ -40,6 +40,7 @@
 
     </LinearLayout>
 
+
     <LinearLayout
         app:layout_constraintTop_toBottomOf="@id/search_bar"
         app:layout_constraintBottom_toTopOf="@id/tabs_linear_layout"
@@ -55,6 +56,15 @@
             android:clipToPadding="false"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"/>
+
+        <ProgressBar
+            android:id="@+id/progressBarHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:visibility="invisible"
+            android:layout_marginHorizontal="10dp"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_marginTop="10dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/idRVPhotos"

@@ -9,5 +9,5 @@ interface ImageRepository {
     suspend fun getImages(query : String): Response<ImageResponse>
     suspend fun getCuratedPhotos(): Response<ImageResponse>
     suspend fun getFeaturedCollectionNames(): List<com.test.domain.models.images.Collection>
-    suspend fun getImagesFromCollection(collectionId: String): Response<ImageResponse>
+    suspend fun getImagesFromCollection(collectionId: String): Response<CollectionMediaResponse>
 }

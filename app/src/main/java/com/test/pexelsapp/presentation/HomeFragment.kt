@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -39,11 +38,11 @@ class HomeFragment : Fragment() {
 
         var featuredCollectionsList = ArrayList<String>()
 
-        viewModel.featuredCollectionNames.observe(viewLifecycleOwner, Observer { collections ->
+        viewModel.featuredCollectionNames.observe(viewLifecycleOwner) { collections ->
             if (collections != null) {
                 featuredCollectionsAdapter.setData(collections)
             }
-        })
+        }
 
 
         val featuredCollectionRV = view.findViewById<RecyclerView>(R.id.featured_collections_recycler_view)
@@ -64,26 +63,42 @@ class HomeFragment : Fragment() {
 
 
 
-        viewModel.featuredCollectionNames.observe(viewLifecycleOwner, Observer { collections ->
+        viewModel.featuredCollectionNames.observe(viewLifecycleOwner) { collections ->
             if (collections != null) {
                 featuredCollectionsAdapter.setData(collections)
             }
-        })
-
-        featuredCollectionsAdapter.onCollectionSelected = { collection ->
-            viewModel.getImagesFromCollection(collection.id)
         }
 
-        viewModel.imageList.observe(viewLifecycleOwner, Observer {
+        featuredCollectionsAdapter.onCollectionSelected = { collection ->
+            Log.d("toataw", collection.id)
+//            viewModel.getImagesFromCollection(collection.id)
+            if (collection.title.contains("Curated Picks"))
+                viewModel.getCuratedPhotos()
+            else
+                viewModel.getImages(collection.title)
+        }
+
+        viewModel.imageList.observe(viewLifecycleOwner) {
             if (it.isSuccessful) {
                 val response = it.body()
                 if (response != null) {
                     imageRVAdapter.setImageData(response.photos as ArrayList<Photo>, context!!)
+                    imageRV.scrollToPosition(0)
                 }
             }
-        })
+        }
+
+
+
+//        viewModel.imageListFeaturedCollection.observe(viewLifecycleOwner) {
+//            if (it.isSuccessful) {
+//                val response = it.body()
+//                if (response != null) {
+//                    imageRVAdapter.setImageData(response.media as ArrayList<Photo>, context!!)
+//                }
+//            }
+//        }
 
         return view
     }
-
 }
