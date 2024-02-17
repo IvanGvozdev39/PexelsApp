@@ -1,7 +1,8 @@
-package com.test.domain.models
+package com.test.domain.models.images
 
-data class FeaturedCollectionsResponse(
-    val collections: List<Collection>,
+data class CollectionMediaResponse(
+    val id: String,
+    val media: List<Media>,
     val next_page: String,
     val page: Int,
     val per_page: Int,

@@ -1,8 +1,8 @@
 package com.test.domain.api
 
-import com.test.domain.models.FeaturedCollectionsResponse
-import com.test.domain.models.ImageResponse
-import com.test.domain.models.FeaturedTitle
+import com.test.domain.models.featured_collections.FeaturedCollectionsResponse
+import com.test.domain.models.images.CollectionMediaResponse
+import com.test.domain.models.images.ImageResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -22,7 +22,7 @@ interface ApiInterface {
     @GET("search")
     suspend fun getImages(
         @Query("query") query : String,
-        @Query("per_page") perpage : Int = 80,
+        @Query("per_page") perpage : Int = 20,
     ): Response<ImageResponse>
 
 
@@ -30,6 +30,15 @@ interface ApiInterface {
     @GET("curated")
     suspend fun getCuratedPhotos(
         @Query("page") page: Int = 1,
-        @Query("per_page") perPage: Int = 30
+        @Query("per_page") perPage: Int = 20
+    ): Response<ImageResponse>
+
+
+    @Headers("Authorization: dl4SeUa1OfAeZQqkN160kyujsExbgUz5qLd621n6hGVQD2FdISfBM11D")
+    @GET("collections/{collectionId}")
+    suspend fun getImagesFromCollection(
+        @Query("collectionId") collectionId: String,
+        @Query("page") page: Int = 1,
+        @Query("per_page") perPage: Int = 20
     ): Response<ImageResponse>
 }

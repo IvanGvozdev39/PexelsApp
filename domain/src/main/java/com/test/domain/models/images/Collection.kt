@@ -1,4 +1,4 @@
-package com.test.domain.models
+package com.test.domain.models.images
 
 data class Collection(
     val description: Any,
