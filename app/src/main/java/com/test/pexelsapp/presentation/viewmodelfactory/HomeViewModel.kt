@@ -4,17 +4,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.test.domain.models.images.ImageResponse
 import com.test.data.repository.ImageRepositoryImpl
-import com.test.domain.use_cases.LoadCuratedPhotosUseCase
+import com.test.domain.models.images.ImageResponse
+import com.test.domain.use_cases.LoadCuratedImagesUseCase
 import com.test.domain.use_cases.LoadFeaturedCollectionsUseCase
+import com.test.domain.use_cases.LoadPopularImagesUseCase
+import com.test.domain.use_cases.SearchUseCase
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class HomeViewModel(
     private val imageRepository: ImageRepositoryImpl,
     private val loadFeaturedCollectionsUseCase: LoadFeaturedCollectionsUseCase,
-    private val loadCuratedPhotosUseCase: LoadCuratedPhotosUseCase
+    private val loadCuratedImagesUseCase: LoadCuratedImagesUseCase,
+    private val loadPopularImagesUseCase: LoadPopularImagesUseCase,
+    private val searchUseCase: SearchUseCase
 ) : ViewModel() {
 
     var imageList: MutableLiveData<Response<ImageResponse>> = MutableLiveData()
@@ -52,7 +56,16 @@ class HomeViewModel(
     fun getCuratedPhotos() {
         viewModelScope.launch {
             cleanImageRV.postValue(cleanImageRV.value)
-            val response = loadCuratedPhotosUseCase.execute()
+            val response = loadCuratedImagesUseCase.execute()
+            imageList.postValue(response)
+        }
+    }
+
+
+    fun getPopularImages() {
+        viewModelScope.launch {
+            cleanImageRV.postValue(cleanImageRV.value)
+            val response = loadPopularImagesUseCase.execute()
             imageList.postValue(response)
         }
     }
@@ -61,7 +74,7 @@ class HomeViewModel(
     fun getImages(query: String) {
         viewModelScope.launch {
             cleanImageRV.postValue(cleanImageRV.value)
-            val response = imageRepository.getImages(query)
+            val response = searchUseCase.execute(query)
             imageList.postValue(response)
         }
     }

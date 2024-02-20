@@ -12,8 +12,12 @@ class ImageRepositoryImpl : ImageRepository {
     override suspend fun getImages(query : String) = RetrofitInstance.api.getImages(query)
 
 
-    override suspend fun getCuratedPhotos(): Response<ImageResponse> {
-        return api.getCuratedPhotos()
+    override suspend fun getCuratedImages(): Response<ImageResponse> {
+        return api.getCuratedImages()
+    }
+
+    override suspend fun getPopularImages(): Response<ImageResponse> {
+        return api.getPopularImages()
     }
 
     override suspend fun getFeaturedCollectionNames(): List<com.test.domain.models.images.Collection> {

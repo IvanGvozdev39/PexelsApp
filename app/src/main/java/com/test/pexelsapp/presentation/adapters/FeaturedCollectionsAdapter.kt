@@ -13,7 +13,7 @@ import com.test.pexelsapp.R
 
 class FeaturedCollectionsAdapter(
     private val context: Context?,
-    private var collectionList: List<com.test.domain.models.images.Collection>
+    private var collectionList: List<com.test.domain.models.images.Collection>,
 ) : RecyclerView.Adapter<FeaturedCollectionsAdapter.ViewHolder>() {
 
     private var selectedPosition: Int = 0
@@ -21,6 +21,12 @@ class FeaturedCollectionsAdapter(
 
     fun setData(collections: List<com.test.domain.models.images.Collection>) {
         collectionList = collections
+        notifyDataSetChanged()
+    }
+
+
+    fun resetSelection() {
+        selectedPosition = -1
         notifyDataSetChanged()
     }
 

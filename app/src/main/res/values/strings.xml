@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">PexelsApp</string>
     <string name="search">Search</string>
+    <string name="no_results_found">No results found</string>
+    <string name="explore">Explore</string>
+    <string name="download">Download</string>
 </resources>

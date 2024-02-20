@@ -7,7 +7,8 @@ import retrofit2.Response
 interface ImageRepository {
 
     suspend fun getImages(query : String): Response<ImageResponse>
-    suspend fun getCuratedPhotos(): Response<ImageResponse>
+    suspend fun getCuratedImages(): Response<ImageResponse>
+    suspend fun getPopularImages(): Response<ImageResponse>
     suspend fun getFeaturedCollectionNames(): List<com.test.domain.models.images.Collection>
     suspend fun getImagesFromCollection(collectionId: String): Response<CollectionMediaResponse>
 }

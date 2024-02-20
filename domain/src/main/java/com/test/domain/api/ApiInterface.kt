@@ -28,7 +28,15 @@ interface ApiInterface {
 
     @Headers("Authorization: dl4SeUa1OfAeZQqkN160kyujsExbgUz5qLd621n6hGVQD2FdISfBM11D")
     @GET("curated")
-    suspend fun getCuratedPhotos(
+    suspend fun getCuratedImages(
+        @Query("page") page: Int = 1,
+        @Query("per_page") perPage: Int = 80
+    ): Response<ImageResponse>
+
+
+    @Headers("Authorization: dl4SeUa1OfAeZQqkN160kyujsExbgUz5qLd621n6hGVQD2FdISfBM11D")
+    @GET("popular")
+    suspend fun getPopularImages(
         @Query("page") page: Int = 1,
         @Query("per_page") perPage: Int = 80
     ): Response<ImageResponse>

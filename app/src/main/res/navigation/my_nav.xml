@@ -11,8 +11,22 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_detailsFragment"
-            app:destination="@id/detailsFragment" />
+            android:id="@+id/action_home_to_details"
+            app:destination="@id/detailsFragment">
+            <argument
+                android:name="url"
+                app:argType="string" />
+            <argument
+                android:name="avgColor"
+                app:argType="integer" />
+            <argument
+                android:name="width"
+                app:argType="integer" />
+            <argument
+                android:name="height"
+                app:argType="integer" />
+        </action>
+
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"

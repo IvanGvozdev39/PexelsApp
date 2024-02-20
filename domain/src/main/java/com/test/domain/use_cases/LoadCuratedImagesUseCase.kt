@@ -4,9 +4,9 @@ import com.test.domain.models.images.ImageResponse
 import com.test.domain.repository.ImageRepository
 import retrofit2.Response
 
-class LoadCuratedPhotosUseCase(private val imageRepository: ImageRepository) {
+class LoadCuratedImagesUseCase(private val imageRepository: ImageRepository) {
 
     suspend fun execute(): Response<ImageResponse> {
-        return imageRepository.getCuratedPhotos()
+        return imageRepository.getCuratedImages()
     }
 }
