@@ -22,8 +22,7 @@ class HomeViewModel(
 ) : ViewModel() {
 
     var imageList: MutableLiveData<Response<ImageResponse>> = MutableLiveData()
-
-    var cleanImageRV: MutableLiveData<Int> = MutableLiveData(0)
+//    var cleanImageRV: MutableLiveData<Int> = MutableLiveData(0)
 
 //    var imageListFeaturedCollection: MutableLiveData<Response<CollectionMediaResponse>> = MutableLiveData()
 
@@ -55,7 +54,7 @@ class HomeViewModel(
 
     fun getCuratedPhotos() {
         viewModelScope.launch {
-            cleanImageRV.postValue(cleanImageRV.value)
+//            cleanImageRV.postValue(cleanImageRV.value)
             val response = loadCuratedImagesUseCase.execute()
             imageList.postValue(response)
         }
@@ -64,7 +63,7 @@ class HomeViewModel(
 
     fun getPopularImages() {
         viewModelScope.launch {
-            cleanImageRV.postValue(cleanImageRV.value)
+//            cleanImageRV.postValue(cleanImageRV.value)
             val response = loadPopularImagesUseCase.execute()
             imageList.postValue(response)
         }
@@ -73,7 +72,7 @@ class HomeViewModel(
 
     fun getImages(query: String) {
         viewModelScope.launch {
-            cleanImageRV.postValue(cleanImageRV.value)
+//            cleanImageRV.postValue(cleanImageRV.value)
             val response = searchUseCase.execute(query)
             imageList.postValue(response)
         }

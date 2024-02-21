@@ -7,13 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.test.domain.models.images.Photo
 import com.test.pexelsapp.R
 
 class FeaturedCollectionsAdapter(
     private val context: Context?,
     private var collectionList: List<com.test.domain.models.images.Collection>,
+    private val imageRVAdapter: ImageRVAdapter
 ) : RecyclerView.Adapter<FeaturedCollectionsAdapter.ViewHolder>() {
 
     private var selectedPosition: Int = 0
@@ -73,6 +74,7 @@ class FeaturedCollectionsAdapter(
             setSelectedCollection(position)
             // Notify the fragment about the selected collection
             onCollectionSelected(collection)
+            imageRVAdapter.setImageData(ArrayList<Photo>(), context!!)
         }
     }
 

@@ -1,6 +1,7 @@
 package com.test.pexelsapp.presentation
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -26,28 +27,48 @@ import com.test.pexelsapp.presentation.viewmodelfactory.HomeViewModelFactory
 class HomeFragment : Fragment() {
 
     lateinit var viewModel: HomeViewModel
-    lateinit var imageRVAdapter: ImageRVAdapter
-    private val featuredCollectionsAdapter by lazy {
+    private val imageRVAdapter by lazy(LazyThreadSafetyMode.NONE) {
+        ImageRVAdapter(findNavController())
+    }
+    private val featuredCollectionsAdapter by lazy(LazyThreadSafetyMode.NONE) {
         FeaturedCollectionsAdapter(
             requireContext(),
-            ArrayList()
+            ArrayList(),
+            imageRVAdapter
         )
     }
+
     private lateinit var progressBar: ProgressBar
     private lateinit var searchBarET: EditText
     private lateinit var searchBarCloseIcon: ImageView
     private lateinit var parentConstraintLayout: ConstraintLayout
     private lateinit var noResultsLayout: LinearLayout
     private lateinit var exploreBtn: Button
+    private lateinit var imageRV: RecyclerView
+    private var layoutManagerState: Parcelable? = null
 
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
+
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+
+
+        return view
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, HomeViewModelFactory())[HomeViewModel::class.java]
         progressBar = view.findViewById(R.id.progressBarHorizontal)
         searchBarET = view.findViewById(R.id.search_bar_edit_text)
@@ -55,6 +76,7 @@ class HomeFragment : Fragment() {
         parentConstraintLayout = view.findViewById(R.id.parent_constraint_layout)
         noResultsLayout = view.findViewById(R.id.no_results_layout)
         exploreBtn = view.findViewById(R.id.explore_button)
+
 
         viewModel.featuredCollectionNames.observe(viewLifecycleOwner) { collections ->
             if (collections != null) {
@@ -69,16 +91,14 @@ class HomeFragment : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         featuredCollectionRV.adapter = featuredCollectionsAdapter
 
-        val imageRV = view.findViewById<RecyclerView>(R.id.idRVPhotos)
-        val photoList = ArrayList<String>()
+        imageRV = view.findViewById<RecyclerView>(R.id.idRVPhotos)
 
-
-
-        imageRVAdapter = ImageRVAdapter(findNavController())
 
         imageRV.apply {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = imageRVAdapter
+            Log.d("awfawfa", layoutManagerState.toString())
+            layoutManager?.onRestoreInstanceState(layoutManagerState)
         }
 
 
@@ -103,7 +123,7 @@ class HomeFragment : Fragment() {
                 val response = it.body()
                 if (response != null) {
                     imageRVAdapter.setImageData(response.photos as ArrayList<Photo>, context!!)
-                    imageRV.scrollToPosition(0)
+//                    imageRV.scrollToPosition(0)
 
                     if (response.photos.size == 0) {
                         noResultsLayout.visibility = View.VISIBLE
@@ -125,9 +145,9 @@ class HomeFragment : Fragment() {
         }
 
 
-        viewModel.cleanImageRV.observe(viewLifecycleOwner) {
-            imageRVAdapter.setImageData(ArrayList<Photo>(), context!!)
-        }
+//        viewModel.cleanImageRV.observe(viewLifecycleOwner) {
+//            imageRVAdapter.setImageData(ArrayList<Photo>(), context!!)
+//        }
 
 
         val searchViewTextWatcher: TextWatcher = object : TextWatcher {
@@ -137,6 +157,7 @@ class HomeFragment : Fragment() {
                 } else {
                     searchBarCloseIcon.visibility = View.VISIBLE
                     featuredCollectionsAdapter.resetSelection()
+                    context?.let { imageRVAdapter.setImageData(ArrayList<Photo>(), it) }
                     viewModel.getImages(searchBarET.text.toString())
                     imageRV.scrollToPosition(0)
                 }
@@ -175,9 +196,18 @@ class HomeFragment : Fragment() {
 //            }
 //        }
 
-
-        return view
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Save scroll position when fragment is paused
+        layoutManagerState = imageRV.layoutManager?.onSaveInstanceState()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // Save scroll position when fragment is paused
+        layoutManagerState = imageRV.layoutManager?.onSaveInstanceState()
+    }
 
 }
