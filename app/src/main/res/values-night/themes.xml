@@ -13,4 +13,9 @@
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
+
+    <style name="Theme.Splash_Screen" parent="Theme.PexelsApp">
+        <item name="android:windowBackground">@drawable/splashscreen</item>
+        <item name="android:statusBarColor">@color/red</item>
+    </style>
 </resources>
