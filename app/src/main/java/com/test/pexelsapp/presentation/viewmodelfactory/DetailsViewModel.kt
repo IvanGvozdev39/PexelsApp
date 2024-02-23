@@ -1,16 +1,13 @@
 package com.test.pexelsapp.presentation.viewmodelfactory
 
-import android.Manifest
 import android.content.ContentValues
 import android.content.Context
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -98,41 +95,67 @@ class DetailsViewModel(private val context: Context) : ViewModel() {
     }
 
 
-    fun addImageToBookmarks(image: Photo) {
-        val data = com.test.data.room_db.PhotoEntity(
-            image.id, image.alt, image.avg_color, image.height, image.liked, image.photographer,
-            image.photographer_id, image.photographer_url, image.src.original, image.url, image.width
-        )
-        photoDao?.insert(data)
-    }
-
-
-    fun deleteImageFromBookmarks(image: Photo) {
-        val data = com.test.data.room_db.PhotoEntity(
-            image.id, image.alt, image.avg_color, image.height, image.liked, image.photographer,
-            image.photographer_id, image.photographer_url, image.src.original, image.url, image.width
-        )
-        photoDao?.delete(data)
-    }
-
-
-    fun getAllImagesFromBookmarks() : List<Photo> {
-        val data = photoDao!!.getAll()
-        val photoList = ArrayList<Photo>()
-        for (image in data) {
-            photoList.add(Photo(image.alt, image.avgColor, image.height, image.id, image.liked,
-            image.photographer, image.photographerId, image.photographerUrl, Src(image.src, image.src, image.src, image.src, image.src
-                , image.src, image.src, image.src),
-            image.url, image.width))
+    suspend fun addImageToBookmarks(image: Photo) {
+        withContext(Dispatchers.IO) {
+            val data = com.test.data.room_db.PhotoEntity(
+                image.id,
+                image.alt,
+                image.avg_color,
+                image.height,
+                image.liked,
+                image.photographer,
+                image.photographer_id,
+                image.photographer_url,
+                image.src.original,
+                image.url,
+                image.width
+            )
+            photoDao?.insert(data)
         }
-        return photoList
     }
 
 
-    private fun isWriteStoragePermissionGranted(): Boolean {
+    suspend fun deleteImageFromBookmarks(image: Photo) {
+        withContext(Dispatchers.IO) {
+            val data = com.test.data.room_db.PhotoEntity(
+                image.id,
+                image.alt,
+                image.avg_color,
+                image.height,
+                image.liked,
+                image.photographer,
+                image.photographer_id,
+                image.photographer_url,
+                image.src.original,
+                image.url,
+                image.width
+            )
+            photoDao?.delete(data)
+        }
+    }
+
+
+    suspend fun getAllImagesFromBookmarks(): List<Photo> {
+        return withContext(Dispatchers.IO) {
+            val data = photoDao?.getAll()
+            val photoList = ArrayList<Photo>()
+            if (data != null) {
+                for (image in data) {
+                    photoList.add(Photo(image.alt, image.avgColor, image.height, image.id, image.liked,
+                        image.photographer, image.photographerId, image.photographerUrl,
+                        Src(image.src, image.src, image.src, image.src, image.src, image.src, image.src, image.src),
+                        image.url, image.width))
+                }
+            }
+            photoList
+        }
+    }
+
+
+    /*private fun isWriteStoragePermissionGranted(): Boolean {
         return ContextCompat.checkSelfPermission(
             context,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         ) == PackageManager.PERMISSION_GRANTED
-    }
+    }*/
 }

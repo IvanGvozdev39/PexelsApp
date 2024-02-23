@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.content.ContextCompat.getDrawable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -24,6 +25,7 @@ import com.test.domain.models.images.Photo
 import com.test.pexelsapp.R
 import com.test.pexelsapp.presentation.viewmodelfactory.DetailsViewModel
 import com.test.pexelsapp.presentation.viewmodelfactory.DetailsViewModelFactory
+import kotlinx.coroutines.launch
 
 
 class DetailsFragment : Fragment() {
@@ -44,8 +46,7 @@ class DetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_details, container, false)
-        return view
+        return inflater.inflate(R.layout.fragment_details, container, false)
     }
 
 
@@ -130,11 +131,15 @@ class DetailsFragment : Fragment() {
 
 
     private fun checkBookmars(image: Photo) {
-        val dbPhotos = viewModel.getAllImagesFromBookmarks()
-        for (dbPhoto in dbPhotos) {
-            if (photo?.src?.equals(dbPhoto.src) == true) {
-                inBookmarks = true
-                bookmarksBtn.setImageDrawable(context?.let { getDrawable(it, R.drawable.ic_bookmark_added) })
+        var dbPhotos = ArrayList<Photo>()
+        lifecycleScope.launch {
+            dbPhotos = viewModel.getAllImagesFromBookmarks() as ArrayList<Photo>
+            for (dbPhoto in dbPhotos) {
+                Log.d("awksaflw", photo?.src?.original + "\n" + dbPhoto.src.original)
+                if (photo?.src?.original?.equals(dbPhoto.src.original) == true) {
+                    inBookmarks = true
+                    bookmarksBtn.setImageDrawable(context?.let { getDrawable(it, R.drawable.ic_bookmark_added) })
+                }
             }
         }
     }
@@ -142,11 +147,13 @@ class DetailsFragment : Fragment() {
 
     private fun addOrDeleteBookmark(image: Photo) {
         if (!inBookmarks) {
-            viewModel.addImageToBookmarks(image)
+            lifecycleScope.launch { viewModel.addImageToBookmarks(image) }
             bookmarksBtn.setImageDrawable(context?.let { getDrawable(it, R.drawable.ic_bookmark_added) })
+            inBookmarks = true
         } else {
-            viewModel.deleteImageFromBookmarks(image)
-            bookmarksBtn.setImageDrawable(context?.let { getDrawable(it, R.drawable.ic_bookmark_added) })
+            lifecycleScope.launch { viewModel.deleteImageFromBookmarks(image) }
+            bookmarksBtn.setImageDrawable(context?.let { getDrawable(it, R.drawable.ic_bookmark) })
+            inBookmarks = false
         }
     }
 

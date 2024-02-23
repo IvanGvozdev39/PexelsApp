@@ -57,13 +57,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-
-
-        val view = inflater.inflate(R.layout.fragment_home, container, false)
-
-
-        return view
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
 
@@ -186,6 +180,10 @@ class HomeFragment : Fragment() {
 
         searchBarET.addTextChangedListener(searchViewTextWatcher)
 
+        val bookmarksTab = view.findViewById<ImageView>(R.id.bookmarks_tab)
+        bookmarksTab.setOnClickListener {
+            findNavController().navigate(R.id.bookmarksFragment)
+        }
 
 //        viewModel.imageListFeaturedCollection.observe(viewLifecycleOwner) {
 //            if (it.isSuccessful) {
