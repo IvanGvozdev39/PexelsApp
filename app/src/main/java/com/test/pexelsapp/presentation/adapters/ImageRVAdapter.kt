@@ -72,11 +72,9 @@ class ImageRVAdapter(private val navController: NavController) : RecyclerView.Ad
 
 
         holder.itemView.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putString("url", photo.src.original)
-            bundle.putInt("avgColor", placeholderDrawable.color)
-            bundle.putInt("width", photo.width)
-            bundle.putInt("height", photo.height)
+            val bundle = Bundle().apply {
+                putParcelable("photo", photo)
+            }
             navController.navigate(R.id.detailsFragment, bundle)
         }
     }

@@ -8,7 +8,7 @@ import com.test.domain.use_cases.LoadFeaturedCollectionsUseCase
 import com.test.domain.use_cases.LoadPopularImagesUseCase
 import com.test.domain.use_cases.SearchUseCase
 
-class HomeViewModelFactory() : ViewModelProvider.Factory {
+class HomeViewModelFactory : ViewModelProvider.Factory {
 
     private val imageRepository by lazy(LazyThreadSafetyMode.NONE) {
         ImageRepositoryImpl()

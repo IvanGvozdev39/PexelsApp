@@ -17,7 +17,8 @@ class FeaturedCollectionsAdapter(
     private val imageRVAdapter: ImageRVAdapter
 ) : RecyclerView.Adapter<FeaturedCollectionsAdapter.ViewHolder>() {
 
-    private var selectedPosition: Int = 0
+    private var selectedPosition: Int = -1
+    private var wasClicked: Boolean = false
 
 
     fun setData(collections: List<com.test.domain.models.images.Collection>) {

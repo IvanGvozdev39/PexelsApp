@@ -4,4 +4,7 @@
     <string name="no_results_found">No results found</string>
     <string name="explore">Explore</string>
     <string name="download">Download</string>
+    <string name="downloading">Downloading..</string>
+    <string name="downloaded_successfully">Downloaded Successfully</string>
+    <string name="download_failed">Download Failed</string>
 </resources>
