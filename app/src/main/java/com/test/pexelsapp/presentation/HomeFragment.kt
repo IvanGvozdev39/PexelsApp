@@ -26,6 +26,15 @@ import com.test.pexelsapp.presentation.viewmodelfactory.HomeViewModelFactory
 
 class HomeFragment : Fragment() {
 
+    private lateinit var progressBar: ProgressBar
+    private lateinit var searchBarET: EditText
+    private lateinit var searchBarCloseIcon: ImageView
+    private lateinit var parentConstraintLayout: ConstraintLayout
+    private lateinit var noResultsLayout: LinearLayout
+    private lateinit var exploreBtn: Button
+    private lateinit var imageRV: RecyclerView
+    private var layoutManagerState: Parcelable? = null
+    private var connectionRecoveredRecreate = false
     lateinit var viewModel: HomeViewModel
     private val imageRVAdapter by lazy(LazyThreadSafetyMode.NONE) {
         ImageRVAdapter(findNavController())
@@ -37,16 +46,14 @@ class HomeFragment : Fragment() {
             imageRVAdapter
         )
     }
+    private var lastSearchQuery = ""
 
-    private lateinit var progressBar: ProgressBar
-    private lateinit var searchBarET: EditText
-    private lateinit var searchBarCloseIcon: ImageView
-    private lateinit var parentConstraintLayout: ConstraintLayout
-    private lateinit var noResultsLayout: LinearLayout
-    private lateinit var exploreBtn: Button
-    private lateinit var imageRV: RecyclerView
-    private var layoutManagerState: Parcelable? = null
 
+//    companion object {
+//        fun newInstance(): HomeFragment {
+//            return HomeFragment()
+//        }
+//    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,6 +66,7 @@ class HomeFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -105,6 +113,7 @@ class HomeFragment : Fragment() {
 
         featuredCollectionsAdapter.onCollectionSelected = { collection ->
 //            viewModel.getImagesFromCollection(collection.id)
+            lastSearchQuery = collection.title
             searchBarET.clearFocus()
             if (collection.title.contains("Curated Picks"))
                 viewModel.getCuratedPhotos()
@@ -113,7 +122,7 @@ class HomeFragment : Fragment() {
         }
 
         viewModel.imageList.observe(viewLifecycleOwner) {
-            if (it.isSuccessful) {
+            if (it?.isSuccessful == true) {
                 val response = it.body()
                 if (response != null) {
                     imageRVAdapter.setImageData(response.photos as ArrayList<Photo>, context!!)
@@ -153,6 +162,7 @@ class HomeFragment : Fragment() {
                     featuredCollectionsAdapter.resetSelection()
                     context?.let { imageRVAdapter.setImageData(ArrayList<Photo>(), it) }
                     viewModel.getImages(searchBarET.text.toString())
+                    lastSearchQuery = searchBarET.text.toString()
                     imageRV.scrollToPosition(0)
                 }
             }
@@ -194,6 +204,24 @@ class HomeFragment : Fragment() {
 //            }
 //        }
 
+
+        viewModel.noNetwork.observe(viewLifecycleOwner) {
+            val noInternetLinearLayout = view.findViewById<LinearLayout>(R.id.no_internet_layout)
+            if (it) {
+                imageRV.visibility = View.GONE
+                noInternetLinearLayout.visibility = View.VISIBLE
+                Toast.makeText(context, getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show()
+            } else {
+                imageRV.visibility = View.VISIBLE
+                noInternetLinearLayout.visibility = View.GONE
+            }
+
+            val tryAgainBtn = view.findViewById<Button>(R.id.reconnect_button)
+            tryAgainBtn.setOnClickListener {
+                viewModel.retryLastOperation(lastSearchQuery)
+            }
+        }
+
     }
 
     override fun onResume() {
@@ -204,8 +232,6 @@ class HomeFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        // Save scroll position when fragment is paused
-        layoutManagerState = imageRV.layoutManager?.onSaveInstanceState()
     }
 
 }

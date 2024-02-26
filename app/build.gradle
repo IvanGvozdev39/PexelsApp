@@ -81,4 +81,8 @@ dependencies {
 
     implementation 'com.google.guava:guava:28.2-android'
     implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+
+    implementation 'com.google.dagger:dagger:2.40.1'
+    kapt 'com.google.dagger:dagger-compiler:2.40.1'
+    implementation 'javax.inject:javax.inject:1'
 }

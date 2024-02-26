@@ -64,7 +64,7 @@ class FeaturedCollectionsAdapter(
         if (position == selectedPosition) {
             holder.titleTV.backgroundTintList =
                 ColorStateList.valueOf(context?.getColor(R.color.red) ?: Color.RED)
-            holder.titleTV.setTextColor(context?.getColor(R.color.white) ?: Color.WHITE)
+            holder.titleTV.setTextColor(context?.getColor(R.color.actual_white) ?: Color.WHITE)
         } else {
             holder.titleTV.backgroundTintList =
                 ColorStateList.valueOf(context?.getColor(R.color.lighter_gray) ?: Color.LTGRAY)

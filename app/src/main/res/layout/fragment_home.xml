@@ -9,6 +9,35 @@
     tools:context=".presentation.HomeFragment">
 
     <LinearLayout
+        android:id="@+id/no_internet_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_no_internet"
+            app:tint="@color/red"/>
+
+        <Button
+            android:id="@+id/reconnect_button"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@color/transparent"
+            android:text="@string/try_again"
+            android:textSize="16sp"
+            android:textAllCaps="false"/>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/no_results_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

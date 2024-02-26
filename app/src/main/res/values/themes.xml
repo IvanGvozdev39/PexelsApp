@@ -6,13 +6,12 @@
         <item name="colorPrimaryVariant">@color/red</item>
         <item name="colorOnPrimary">@color/red</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/red</item>
+        <item name="colorSecondary">@color/lighter_gray</item>
         <item name="colorSecondaryVariant">@color/red</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
-        <!-- Customize your theme here. -->
     </style>
 
     <style name="Theme.Splash_Screen" parent="Theme.PexelsApp">

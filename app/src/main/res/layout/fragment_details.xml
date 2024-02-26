@@ -26,6 +26,7 @@
                 android:layout_height="45dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
+                android:tint="@color/black"
                 android:layout_marginStart="20dp"
                 android:background="@drawable/shape_round_rectangular_lighter_gray_10"
                 android:src="@drawable/ic_back" />
@@ -114,6 +115,7 @@
             android:background="@drawable/shape_round_rectangular_lighter_gray_30"
             android:src="@drawable/ic_bookmark"
             android:padding="10dp"
+            android:tint="@color/black"
             android:layout_alignParentEnd="true"/>
 
 
